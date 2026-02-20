@@ -1,0 +1,28 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.3, pytest-7.4.4, pluggy-1.0.0 -- C:\Users\purva\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\purva\OneDrive\Desktop\NotebookLLM
+plugins: anyio-4.12.1, Faker-37.11.0, langsmith-0.6.4
+collecting ... collected 19 items
+
+tests/unit/test_chunker.py::test_empty_text PASSED                       [  5%]
+tests/unit/test_chunker.py::test_single_chunk PASSED                     [ 10%]
+tests/unit/test_chunker.py::test_multiple_chunks PASSED                  [ 15%]
+tests/unit/test_chunker.py::test_chunk_indices_are_sequential PASSED     [ 21%]
+tests/unit/test_notebook_store.py::test_notebook_dir_created PASSED      [ 26%]
+tests/unit/test_notebook_store.py::test_files_raw_dir_created PASSED     [ 31%]
+tests/unit/test_notebook_store.py::test_files_extracted_dir_created PASSED [ 36%]
+tests/unit/test_notebook_store.py::test_chroma_dir_created PASSED        [ 42%]
+tests/unit/test_notebook_store.py::test_artifacts_dir_created PASSED     [ 47%]
+tests/unit/test_notebook_store.py::test_artifacts_dir_invalid_kind PASSED [ 52%]
+tests/unit/test_notebook_store.py::test_empty_chat_history PASSED        [ 57%]
+tests/unit/test_notebook_store.py::test_append_and_read_chat_messages PASSED [ 63%]
+tests/unit/test_notebook_store.py::test_messages_jsonl_is_one_json_per_line PASSED [ 68%]
+tests/unit/test_notebook_store.py::test_save_report PASSED               [ 73%]
+tests/unit/test_notebook_store.py::test_save_report_auto_increments PASSED [ 78%]
+tests/unit/test_notebook_store.py::test_save_quiz PASSED                 [ 84%]
+tests/unit/test_notebook_store.py::test_save_podcast PASSED              [ 89%]
+tests/unit/test_notebook_store.py::test_notebook_index_roundtrip PASSED  [ 94%]
+tests/unit/test_notebook_store.py::test_notebook_index_empty_when_missing PASSED [100%]
+
+============================= 19 passed in 0.92s ==============================

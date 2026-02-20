@@ -6,15 +6,15 @@ load_dotenv()
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-DATA_DIR = BASE_DIR / "data"
-UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", str(DATA_DIR / "uploads")))
-CHROMA_DIR = Path(os.getenv("CHROMA_DIR", str(DATA_DIR / "chroma")))
+DATA_DIR = Path(os.getenv("DATA_DIR", str(BASE_DIR / "data")))
+# Per-user/per-notebook directories are managed by notebook_store.py.
+# USERS_DIR is the root under which all user folders live.
+USERS_DIR = DATA_DIR / "users"
 SQLITE_PATH = Path(os.getenv("SQLITE_PATH", str(DATA_DIR / "notebooklm.db")))
 
-# Ensure dirs exist at import time
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+# Ensure base dirs exist at import time
 DATA_DIR.mkdir(parents=True, exist_ok=True)
+USERS_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 SECRET_KEY: str = os.getenv("SECRET_KEY", "insecure-default-change-me")

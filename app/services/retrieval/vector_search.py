@@ -1,33 +1,28 @@
 """
-vector_search.py + context_builder.py
-Retrieves top-K relevant chunks from ChromaDB given a user query,
+vector_search.py
+Retrieves top-K relevant chunks from the per-notebook ChromaDB given a user query,
 then formats them into a prompt context string with citations.
 """
 from typing import List, Tuple
 
-import chromadb
-from chromadb.config import Settings as ChromaSettings
-
-from app.core.config import CHROMA_DIR, TOP_K_CHUNKS
+from app.core.config import TOP_K_CHUNKS
 from app.services.ingestion.embedder import embed_query
-
-_chroma_client = chromadb.PersistentClient(
-    path=str(CHROMA_DIR),
-    settings=ChromaSettings(anonymized_telemetry=False),
-)
+from app.services.storage import notebook_store
 
 
-def vector_search(notebook_id: str, query: str, top_k: int = TOP_K_CHUNKS) -> List[dict]:
+def vector_search(
+    username: str,
+    notebook_id: str,
+    query: str,
+    top_k: int = TOP_K_CHUNKS,
+) -> List[dict]:
     """
     Embed query and search the notebook's ChromaDB collection.
 
     Returns:
         List of dicts: [{id, content, source_id, chunk_index, distance}]
     """
-    collection = _chroma_client.get_or_create_collection(
-        name=f"notebook_{notebook_id}",
-        metadata={"hnsw:space": "cosine"},
-    )
+    collection = notebook_store.get_chroma_collection(username, notebook_id)
 
     if collection.count() == 0:
         return []
@@ -51,14 +46,18 @@ def vector_search(notebook_id: str, query: str, top_k: int = TOP_K_CHUNKS) -> Li
     return hits
 
 
-def build_context(notebook_id: str, query: str) -> Tuple[str, List[str]]:
+def build_context(
+    username: str,
+    notebook_id: str,
+    query: str,
+) -> Tuple[str, List[str]]:
     """
     Build the context string for the LLM prompt and collect cited chunk IDs.
 
     Returns:
         (context_string, list_of_cited_chunk_ids)
     """
-    hits = vector_search(notebook_id, query)
+    hits = vector_search(username, notebook_id, query)
     if not hits:
         return "", []
 
